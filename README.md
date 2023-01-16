@@ -1,6 +1,8 @@
 # 🗺️️ Generic sync.Map
 
 [![Go package](https://github.com/survivorbat/go-tsyncmap/actions/workflows/test.yaml/badge.svg)](https://github.com/survivorbat/go-tsyncmap/actions/workflows/test.yaml)
+![GitHub](https://img.shields.io/github/license/survivorbat/go-tsyncmap)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/survivorbat/go-tsyncmap)
 
 A wrap around sync.Map that uses generics.
 
