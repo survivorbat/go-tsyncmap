@@ -173,6 +173,6 @@ func TestMap_Range_Ranges(t *testing.T) {
 	})
 
 	// Assert
-	assert.Equal(t, []testKey{key1, key2, key3}, calledWithKey)
-	assert.Equal(t, []testValue{value1, value2, value3}, calledWithValue)
+	assert.ElementsMatch(t, []testKey{key1, key2, key3}, calledWithKey)
+	assert.ElementsMatch(t, []testValue{value1, value2, value3}, calledWithValue)
 }
