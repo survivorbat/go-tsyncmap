@@ -2,6 +2,7 @@ package tsyncmap
 
 import (
 	"github.com/stretchr/testify/assert"
+	"sync"
 	"testing"
 )
 
@@ -175,4 +176,174 @@ func TestMap_Range_Ranges(t *testing.T) {
 	// Assert
 	assert.ElementsMatch(t, []testKey{key1, key2, key3}, calledWithKey)
 	assert.ElementsMatch(t, []testValue{value1, value2, value3}, calledWithValue)
+}
+
+// Benchmarks
+
+// Necessary to assign to in benchmarks
+var result any
+var ok bool
+
+func BenchmarkMap_Load(b *testing.B) {
+	object := new(Map[testKey, testValue])
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	object.Store(key, value)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		result, ok = object.Load(key)
+	}
+}
+
+func BenchmarkSyncMap_Load(b *testing.B) {
+	object := new(sync.Map)
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	object.Store(key, value)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		result, ok = object.Load(key)
+	}
+}
+
+func BenchmarkMap_Store(b *testing.B) {
+	object := new(Map[testKey, testValue])
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		object.Store(key, value)
+	}
+}
+
+func BenchmarkSyncMap_Store(b *testing.B) {
+	object := new(sync.Map)
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		object.Store(key, value)
+	}
+}
+
+func BenchmarkMap_LoadOrStore(b *testing.B) {
+	object := new(Map[testKey, testValue])
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		result, ok = object.LoadOrStore(key, value)
+	}
+}
+
+func BenchmarkSyncMap_LoadOrStore(b *testing.B) {
+	object := new(sync.Map)
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		result, ok = object.LoadOrStore(key, value)
+	}
+}
+
+func BenchmarkMap_Delete(b *testing.B) {
+	object := new(Map[testKey, testValue])
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	object.Store(key, value)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		object.Delete(key)
+	}
+}
+
+func BenchmarkSyncMap_Delete(b *testing.B) {
+	object := new(sync.Map)
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	object.Store(key, value)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		object.Delete(key)
+	}
+}
+
+func BenchmarkMap_LoadAndDelete(b *testing.B) {
+	object := new(Map[testKey, testValue])
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	object.Store(key, value)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		result, ok = object.LoadAndDelete(key)
+	}
+}
+
+func BenchmarkSyncMap_LoadAndDelete(b *testing.B) {
+	object := new(sync.Map)
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	object.Store(key, value)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		result, ok = object.LoadAndDelete(key)
+	}
+}
+
+func BenchmarkMap_Range(b *testing.B) {
+	object := new(Map[testKey, testValue])
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	object.Store(key, value)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		object.Range(func(key testKey, value testValue) bool {
+			return true
+		})
+	}
+}
+
+func BenchmarkSyncMap_Range(b *testing.B) {
+	object := new(sync.Map)
+
+	key := testKey{id: 5}
+	value := testValue{name: "abc"}
+
+	object.Store(key, value)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		object.Range(func(key any, value any) bool {
+			return true
+		})
+	}
 }
