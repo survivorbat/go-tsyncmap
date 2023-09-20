@@ -1,9 +1,10 @@
 package tsyncmap
 
 import (
-	"github.com/stretchr/testify/assert"
 	"sync"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type testKey struct {
@@ -170,6 +171,7 @@ func TestMap_Range_Ranges(t *testing.T) {
 	item.Range(func(k testKey, v testValue) bool {
 		calledWithKey = append(calledWithKey, k)
 		calledWithValue = append(calledWithValue, v)
+
 		return true
 	})
 
@@ -179,10 +181,6 @@ func TestMap_Range_Ranges(t *testing.T) {
 }
 
 // Benchmarks
-
-// Necessary to assign to in benchmarks
-var result any
-var ok bool
 
 func BenchmarkMap_Load(b *testing.B) {
 	object := new(Map[testKey, testValue])
@@ -194,7 +192,7 @@ func BenchmarkMap_Load(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		result, ok = object.Load(key)
+		object.Load(key)
 	}
 }
 
@@ -208,7 +206,7 @@ func BenchmarkSyncMap_Load(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		result, ok = object.Load(key)
+		object.Load(key)
 	}
 }
 
@@ -244,7 +242,7 @@ func BenchmarkMap_LoadOrStore(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		result, ok = object.LoadOrStore(key, value)
+		object.LoadOrStore(key, value)
 	}
 }
 
@@ -256,7 +254,7 @@ func BenchmarkSyncMap_LoadOrStore(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		result, ok = object.LoadOrStore(key, value)
+		object.LoadOrStore(key, value)
 	}
 }
 
@@ -298,7 +296,7 @@ func BenchmarkMap_LoadAndDelete(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		result, ok = object.LoadAndDelete(key)
+		object.LoadAndDelete(key)
 	}
 }
 
@@ -312,7 +310,7 @@ func BenchmarkSyncMap_LoadAndDelete(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		result, ok = object.LoadAndDelete(key)
+		object.LoadAndDelete(key)
 	}
 }
 
